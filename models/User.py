@@ -283,12 +283,16 @@ class Manager(User):
         data = Database.find_one('users', {'$and': [{'manager': True}, {'email': email}]})
         if data is not None:
             return cls(**data)
+        else:
+            return "manager is none"
 
     @classmethod
     def get_by_email_simulation(cls, email):
         data = Database.find_oneSimulation('users', {'$and': [{'manager': True}, {'email': email}]})
         if data is not None:
             return cls(**data)
+        else:
+            return "manager is none"
 
     def get_employees(self):
         return User.get_by_company(self.company)
@@ -340,7 +344,7 @@ class Manager(User):
                     return False, str(e)
             else:
                 # User already exist
-                return False, "user email already exist"
+                return True, "user email already exist"
 
     @classmethod
     def check_id(cls, _id):

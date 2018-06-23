@@ -30,7 +30,7 @@ def add_random_users_simulation(maxEmployees, manager):
         return
     NUM_EMPLOYEES = random.randint(maxEmployees / 2, maxEmployees)
     for i in range(NUM_EMPLOYEES-1):
-        manager.user_register_simulation("simulationEmp" + str(i) +"@gmail.com", str(i), "simulationEmp" + str(i), '000000026', 'eng', 3, 'Simulation', "facility" + str(random.randint(1, NUM_FACILITIES)))
+        manager.user_register_simulation(Manager, "simulationEmp" + str(i) +"@gmail.com", str(i), "simulationEmp" + str(i), '000000026', 'eng', 3, 'Simulation', "facility" + str(random.randint(1, NUM_FACILITIES)))
 
 def add_random_rooms_simulation(maxRooms, manager):
     '''
@@ -44,7 +44,7 @@ def add_random_rooms_simulation(maxRooms, manager):
         return
     NUM_ROOMS = random.randint(1, maxRooms)
     for i in range(NUM_ROOMS-1):
-        Room.add_room_simulation(random.randint(1,3), random.randint(30,100), i, random.randint(5,8), "facility" + str(random.randint(1, NUM_FACILITIES)))
+        Room.add_room_simulation(Room, random.randint(3,6), random.randint(30,100), i, manager.company, "facility" + str(random.randint(1, NUM_FACILITIES)))
 
 def add_random_facilities_simulation(maxFacilities, manager):
     '''
@@ -92,9 +92,10 @@ def simulation_engine(max_rooms, max_employees, max_facilities, duration):
     global DATE
     Database.initialize()
     status, info = Manager.manager_register_simulation(Manager, "simulation@gmail.com", 'admin', 'simulation admin', '000000000', 'Manager', 1, 'Simulation', 'sim')
-    if not status:
+    if status:
         return (info)
-    manager = Manager.get_by_email("simulation@gmail.com")
+    manager = Manager.get_by_email_simulation("simulation@gmail.com")
+    return manager
     DATE = datetime.now()
     add_random_facilities_simulation(max_facilities,manager)
     add_random_rooms_simulation(max_rooms, manager)
