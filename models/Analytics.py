@@ -78,7 +78,7 @@ class Analytics(object):
         all_rooms = Room.get_by_company_simulation(manager.company)
         if all_rooms is None:
             return
-        sum_meetings = []
+        sum_meetings = 0
         for day in range(duration):
             for room in all_rooms:
                 occupancy = room.get_occupancy_simulation(datetime.now()+timedelta(days = day), room._id)

@@ -421,7 +421,7 @@ class Manager(User):
     def add_facility(self, facility):
         Facilities.add_facility(self.company, facility)
 
-    def add_facility_simulation(self, facility):
+    def add_facility_simulation(self,facility):
         Facilities.add_facility_simulation(self.company, facility)
 
     def import_employee(self, file):
