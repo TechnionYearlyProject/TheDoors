@@ -75,6 +75,8 @@ class User(object):
         data = Database.find_oneSimulation('users', {'email': email})
         if data is not None:
             return cls(**data)
+        else:
+            return "none!!!!!!"
 
     @classmethod
     def get_by_company(cls, company):
@@ -291,8 +293,8 @@ class Manager(User):
         data = Database.find_oneSimulation('users', {'$and': [{'manager': True}, {'email': email}]})
         if data is not None:
             return cls(**data)
-        else:
-            return "manager is none"
+        # else:
+        #     return "manager is none"
 
     def get_employees(self):
         return User.get_by_company(self.company)
@@ -375,7 +377,7 @@ class Manager(User):
                 new_user.save_to_mongodb()
             except Exception as e:
                 return False, str(e)
-            return True, ''
+            return True, 'SUCCESS'
         else:
             # User already exist
             return False, "user email already exist"
@@ -393,7 +395,7 @@ class Manager(User):
                 new_user.save_to_mongodb_simulation()
             except Exception as e:
                 return False, str(e)
-            return True, ''
+            return True, 'SUCCESS'
         else:
             # User already exist
             return False, "user email already exist"

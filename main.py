@@ -184,22 +184,22 @@ def route_simulation():
             max_rooms = int(request.form['room'])
             max_employees = int(request.form['employee'])
             max_facilities = int(request.form['facility'])
-            a=simulation_engine(max_rooms, max_employees, max_facilities, duration)
-            flash(a)
+            a = simulation_engine(max_rooms, max_employees, max_facilities, duration)
+            # flash(a)
             manager = Manager.get_by_email_simulation("simulation@gmail.com")
-            flash(manager)
-            return render_template('Simulation.html', employees_no=0, rooms_no=0, facility_no=0,
-                                   meetings_no=0, facility_visits_meetings=[("None", 0, 0)],
-                                   occupancies=[("None", 0)])
-            employees_no = len(manager.get_employees_simulation())
-            facility_no = len(manager.get_facilities_simulation())
+            # flash(manager)
+            # return render_template('Simulation.html', employees_no=0, rooms_no=0, facility_no=0,
+            #                        meetings_no=0, facility_visits_meetings=[("None", 0, 0)],
+            #                        occupancies=[("None", 0)])
+            employees_no = a[0] #len(manager.get_employees_simulation())
+            facility_no = a[2] #len(manager.get_facilities_simulation())
             facility_visits_meetings = []
             facilities = manager.get_facilities_simulation()
             for facility in facilities:
                 visits = Analytics.get_all_participants_in_facility_simulation(manager, facility, duration)
                 meetings = Analytics.get_meetings_number_in_facility_simulation(manager, facility, duration)
                 facility_visits_meetings.append((facility, visits, meetings))
-            rooms_no = len(Room.get_by_company_simulation(manager.company))
+            rooms_no = a[1] #len(Room.get_by_company_simulation(manager.company))
             occupancies = Analytics.get_all_rooms_occupancy_simulation(manager, duration)
             meetings_no = Analytics.get_meeting_number_simulation(manager, duration)
             return render_template('Simulation.html', employees_no=employees_no, rooms_no=rooms_no,
