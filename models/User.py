@@ -75,8 +75,6 @@ class User(object):
         data = Database.find_oneSimulation('users', {'email': email})
         if data is not None:
             return cls(**data)
-        else:
-            return "none!!!!!!"
 
     @classmethod
     def get_by_company(cls, company):

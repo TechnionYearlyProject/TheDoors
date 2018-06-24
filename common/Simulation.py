@@ -48,7 +48,8 @@ def add_random_rooms_simulation(maxRooms, manager):
         return
     NUM_ROOMS = random.randint(1, maxRooms)
     for i in range(NUM_ROOMS):
-        Room.add_room_simulation(Room, random.randint(3,6), random.randint(30,100), i, str(manager.company), "facility" + str(random.randint(1, NUM_FACILITIES)))
+        Room.add_room_simulation(Room, random.randint(3,6), random.randint(30,100), i, str(manager.company),
+                                 "facility" + str(random.randint(1, NUM_FACILITIES)))
 
 def add_random_facilities_simulation(maxFacilities, manager):
     '''
@@ -64,7 +65,7 @@ def add_random_facilities_simulation(maxFacilities, manager):
         facility = "facility" + str(i)
         manager.add_facility_simulation(facility)
 
-def order_rooms_simulation(duration):
+def order_rooms_simulation(duration, manager):
     global DURATION
     global HOURS_PER_DAY
     global NUM_EMPLOYEES
@@ -108,9 +109,9 @@ def simulation_engine(max_rooms, max_employees, max_facilities, duration):
     add_random_rooms_simulation(max_rooms, manager)
     info = add_random_users_simulation(max_employees, manager)
     # return info
-    user = order_rooms_simulation(duration)
+    user = order_rooms_simulation(duration, manager)
     # return user
-    return (NUM_EMPLOYEES, NUM_ROOMS, NUM_FACILITIES)
+    return (NUM_EMPLOYEES, NUM_ROOMS, NUM_FACILITIES+1)
 
 
 
