@@ -107,7 +107,7 @@ class Analytics(object):
             sum_occupancy = 0
             for day in range(duration):
                 sum_occupancy += room.get_occupancy_simulation(datetime.now()+timedelta(days = day), room._id)
-            occupancies.append((room._id, (sum_occupancy * 100) / (int(room.capacity)*duration)))
+            occupancies.append((room._id, int((sum_occupancy * 100) / (int(room.capacity)*duration))))
         return occupancies
 
     @staticmethod

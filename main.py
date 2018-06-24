@@ -187,7 +187,7 @@ def route_simulation():
             a = simulation_engine(max_rooms, max_employees, max_facilities, duration)
             # flash(a)
             manager = Manager.get_by_email_simulation("simulation@gmail.com")
-            # flash(manager)
+            # flash(duration)
             # return render_template('Simulation.html', employees_no=0, rooms_no=0, facility_no=0,
             #                        meetings_no=0, facility_visits_meetings=[("None", 0, 0)],
             #                        occupancies=[("None", 0)])

@@ -33,7 +33,7 @@ def add_random_users_simulation(maxEmployees, manager):
         status, info = manager.user_register_simulation("simulationEmp" + str(i) +"@gmail.com",
                                          str(i), "simulationEmp" + str(i), str(i), 'Software Engineer',
                                          3, 'Simulation', "facility" + str(random.randint(1, NUM_FACILITIES)))
-        if status:
+        if not status:
             return info
 
 def add_random_rooms_simulation(maxRooms, manager):
@@ -76,11 +76,12 @@ def order_rooms_simulation(duration, manager):
     day_need_to_add = 0
     for hour in range(duration_hours-1):
         time = 8 + (hour % 10)
+        DATE = datetime.now()
         DATE += timedelta(days = day_need_to_add)
         for i in range(poisson_dest[hour]-1):
             user_index = random.randint(0, NUM_EMPLOYEES-1)
             user = User.get_by_email_simulation("simulationEmp" + str(user_index) +"@gmail.com")
-            return user
+            # return user
             participants_id = [user_index]
             num_of_participants = random.randint(0,4)
             for i in range(num_of_participants):
@@ -92,7 +93,10 @@ def order_rooms_simulation(duration, manager):
             for id in participants_id:
                 participants.append("simulationEmp" + str(id) +"@gmail.com")
             # participants = map(lambda id: "simulationEmp" + str(id) +"@gmail.com", participants_id)
-            user.new_order_simulation(DATE.strftime('%d/%m/%Y'),participants,time, time+1, 'Simulation', user.facility)
+            try:
+                user.new_order_simulation(DATE.strftime('%d/%m/%Y'),participants,time, time+1, 'Simulation', user.facility)
+            except Exception as e:
+                continue
         if hour%10 == 0:
             day_need_to_add += 1
 
@@ -107,7 +111,7 @@ def simulation_engine(max_rooms, max_employees, max_facilities, duration):
     DATE = datetime.now()
     add_random_facilities_simulation(max_facilities,manager)
     add_random_rooms_simulation(max_rooms, manager)
-    info = add_random_users_simulation(max_employees, manager)
+    info = add_random_users_simulation(50, manager)
     # return info
     user = order_rooms_simulation(duration, manager)
     # return user
