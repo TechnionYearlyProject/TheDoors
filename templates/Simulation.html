@@ -87,7 +87,7 @@
                             class="hide-menu">Dashboard <span
                             class="label label-rouded label-primary pull-right">2</span></span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="{{ url_for('route_simulation') }}">Simulation </a></li>
+{#                            <li><a href="{{ url_for('route_simulation') }}">Simulation </a></li>#}
                             <li><a href="{{ url_for('route_analytics') }}">Analytics </a></li>
                         </ul>
                     </li>
@@ -161,14 +161,14 @@
                                                     <label class="control-label">Max Employees</label>
                                                     <input type="text" id="employee" class="form-control"
                                                            placeholder="10" required
-                                                           name="employee">
+                                                           name="room_name">
                                                 </div>
                                             </div>
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group has-danger">
                                                     <label class="control-label">Max Rooms</label>
-                                                    <input type="text" id="room" name="room"
+                                                    <input type="text" id="room" name="floor"
                                                            class="form-control form-control-danger"
                                                            placeholder="10" required></div>
                                             </div>
@@ -179,7 +179,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group has-danger">
                                                     <label class="control-label">Max Facilities</label>
-                                                    <input type="text" id="facility" name="facility"
+                                                    <input type="text" id="facility" name="capacity"
                                                            class="form-control form-control-danger"
                                                            placeholder="1" required>
                                                 </div>
@@ -189,7 +189,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label">Duration in DAYS</label>
 
-                                                    <input type="text" id="duration" name="duration"
+                                                    <input type="text" id="ID1" name="duration"
                                                            class="form-control form-control-danger"
                                                            placeholder="1" required>
                                                 </div>
@@ -314,8 +314,8 @@
                                     <thead>
                                     <tr>
                                         <th>Facility</th>
-                                        <th>Avg. No. Visits</th>
-                                        <th>Avg. No. Meetings</th>
+                                        <th>Visits</th>
+                                        <th>No. Meetings</th>
                                     </tr>
                                     </thead>
                                     {% for facility_visits_meeting in facility_visits_meetings %}

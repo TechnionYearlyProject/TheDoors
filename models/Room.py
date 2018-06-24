@@ -1,5 +1,4 @@
 import functools
-import random
 
 from common.database import Database
 from datetime import datetime
@@ -133,7 +132,7 @@ class Room(object):
         for schedule in schedules:
             if schedule.date == date and self.intersection(start_time, end_time, schedule):
                 save_place += len(schedule.participants)
-        return True if demand_sits <= self.capacity - save_place else False
+        return True if demand_sits <= int(self.capacity) - save_place else False
 
     def available_on_time_simulation(self, date, start_time, end_time, demand_sits):
         schedules = self.get_schedules_simulation()
@@ -141,7 +140,7 @@ class Room(object):
         for schedule in schedules:
             if schedule.date == date and self.intersection(start_time, end_time, schedule):
                 save_place += len(schedule.participants)
-        return True if demand_sits <= self.capacity - save_place else False
+        return True if demand_sits <= int(self.capacity) - save_place else False
 
     def occupation_room(self, date, start_time, end_time):
         schedules = self.get_schedules()
@@ -234,18 +233,21 @@ class Room(object):
     def add_room(cls, permission, capacity, room_num, floor, company, facility, disabled_access=False):
         _id = company + " " + facility + ' ' + str(room_num)
         if not cls.is_room_exist(_id):
+            print('not exist' + _id)
             new_room = cls(permission, capacity, _id, floor, company, facility, disabled_access)
             Database.insert('rooms', new_room.json())
             return True, _id
         else:
+            print(' exist' + _id)
+
             # room already exist
             return False, _id
 
     @classmethod
     def add_room_simulation(cls, permission, capacity, room_num, floor, company, facility, disabled_access=False):
-        _id = company + " " + facility + " " + str(room_num)
+        _id = company + " " + facility + ' ' + str(room_num)
         if not cls.is_room_exist_simulation(_id):
-            new_room = cls(random.randint(3,6), random.randint(30,100), _id, floor, company, facility, disabled_access)
+            new_room = cls(permission, capacity, _id, floor, company, facility, disabled_access)
             Database.insertSimulation('rooms', new_room.json())
             return True, _id
         else:

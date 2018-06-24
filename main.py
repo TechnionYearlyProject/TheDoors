@@ -173,33 +173,26 @@ def manager_register():
 @app.route('/simulation', methods=['GET', 'POST'])
 def route_simulation():
     if request.method == 'GET':
-        Database.dropAllSimulation()
         return render_template('Simulation.html', employees_no=0, rooms_no=0, facility_no=0,
                                meetings_no=0, facility_visits_meetings=[("None", 0, 0)],
                                occupancies=[("None", 0)])
     if request.method == 'POST':
-        if session['email'] is not None:
-            Database.dropAllSimulation()
+        manager = Manager.get_by_email(session['email'])
+        if session['email'] is not None and manager is not None:
             duration = int(request.form['duration'])
             max_rooms = int(request.form['room'])
             max_employees = int(request.form['employee'])
             max_facilities = int(request.form['facility'])
-            a = simulation_engine(max_rooms, max_employees, max_facilities, duration)
-            # flash(a)
-            manager = Manager.get_by_email_simulation("simulation@gmail.com")
-            # flash(duration)
-            # return render_template('Simulation.html', employees_no=0, rooms_no=0, facility_no=0,
-            #                        meetings_no=0, facility_visits_meetings=[("None", 0, 0)],
-            #                        occupancies=[("None", 0)])
-            employees_no = a[0] #len(manager.get_employees_simulation())
-            facility_no = a[2] #len(manager.get_facilities_simulation())
+            simulation_engine(max_rooms, max_employees, max_facilities, duration)
+            employees_no = len(manager.get_employees_simulation())
+            facility_no = len(manager.get_facilities_simulation())
             facility_visits_meetings = []
             facilities = manager.get_facilities_simulation()
             for facility in facilities:
                 visits = Analytics.get_all_participants_in_facility_simulation(manager, facility, duration)
                 meetings = Analytics.get_meetings_number_in_facility_simulation(manager, facility, duration)
                 facility_visits_meetings.append((facility, visits, meetings))
-            rooms_no = a[1] #len(Room.get_by_company_simulation(manager.company))
+            rooms_no = len(Room.get_by_company_simulation(manager.company))
             occupancies = Analytics.get_all_rooms_occupancy_simulation(manager, duration)
             meetings_no = Analytics.get_meeting_number_simulation(manager, duration)
             return render_template('Simulation.html', employees_no=employees_no, rooms_no=rooms_no,
@@ -340,6 +333,7 @@ def route_edit_friends():
                 user.add_friend(request.form['email'])
             if request.form['type'] == 'remove_friend':
                 user.remove_friend(request.form['email'])
+        #return redirect(url_for('route_analytics'))
         return redirect(url_for('route_edit_friends'))
 
 
@@ -429,6 +423,11 @@ def initialize_database():
 def event_abs_circuit():
     return render_template('event-abs-circuit.html')
 
+
+
+#wsgi_app = main.wsgi_app
+
+wsgi_app = app.wsgi_app
 
 @app.route('/meeting_info', methods=['GET', 'POST'])
 def meeting_info():
